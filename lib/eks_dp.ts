@@ -7,7 +7,6 @@ interface KongDpEksStackProps extends StackProps {
   cluster_dns: String;
   telemetry_dns: String;
   private_ca_arn: string;
-
 }
 
 export class KongDpEks extends Stack {

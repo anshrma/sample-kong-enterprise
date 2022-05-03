@@ -1,6 +1,7 @@
 import { Stack, StackProps, aws_eks, aws_rds, aws_ec2 } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import * as KongCP from 'kong-control-plane';
+// import * as KongCP from 'kong-control-plane';
+import * as KongCP from '../../kong-control-plane/src';
 
 export class KongCpEks extends Stack {
 
@@ -12,16 +13,20 @@ export class KongCpEks extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {} ) {
     super(scope, id, props);
 
-
     const kong_control_plane = new KongCP.KongEks(this, 'KongEksCp', {
       hostedZoneName: 'kong-cp.internal',
       namespace: 'kong',
-      licenseSecretsName: 'kong-license-cdk',
+      licenseSecretsName: 'kong-license1',
       controlPlaneClusterProps: {
-        clusterName: 'kong-cp',
-        version: aws_eks.KubernetesVersion.V1_21,
-        defaultCapacity: 0,
-        endpointAccess: aws_eks.EndpointAccess.PUBLIC_AND_PRIVATE,
+        kongTelemetryOptions: {
+          createPrometheusWorkspace: true,
+        },
+        eksClusterProps:{
+          clusterName: 'kong-cp',
+          version: aws_eks.KubernetesVersion.V1_21,
+          defaultCapacity: 0,
+          endpointAccess: aws_eks.EndpointAccess.PUBLIC_AND_PRIVATE,
+        },
       },
       controlPlaneNodeProps: {
         amiType: aws_eks.NodegroupAmiType.AL2_X86_64,
@@ -33,6 +38,7 @@ export class KongCpEks extends Stack {
         databasename: 'kongdb',
         username: 'kongadmin',
       },
+
     });
 
     this.control_plane = kong_control_plane.controlPlane;
@@ -42,3 +48,5 @@ export class KongCpEks extends Stack {
     // define resources here...
   }
 }
+
+
