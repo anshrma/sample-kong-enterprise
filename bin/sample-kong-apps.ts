@@ -30,3 +30,4 @@ new KongDpEcs(app, 'kong-dp-ecs', {
   telemetry_dns: kong_control_plane_ecs.telemetry_dns,
   private_ca_arn: kong_control_plane_ecs.private_ca_arn,
 });
+

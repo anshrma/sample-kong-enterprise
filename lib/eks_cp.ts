@@ -16,7 +16,7 @@ export class KongCpEks extends Stack {
     const kong_control_plane = new KongCP.KongEks(this, 'KongEksCp', {
       hostedZoneName: 'kong-cp.internal',
       namespace: 'kong',
-      licenseSecretsName: 'kong-license1',
+      licenseSecretsName: 'kong-license-cdk',
       controlPlaneClusterProps: {
         kongTelemetryOptions: {
           createPrometheusWorkspace: true,
