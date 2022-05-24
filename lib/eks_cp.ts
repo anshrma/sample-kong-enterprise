@@ -3,6 +3,10 @@ import { Construct } from 'constructs';
 // import * as KongCP from 'kong-control-plane';
 import * as KongCP from '../../kong-control-plane/src';
 
+interface KongCpEksStackProps extends StackProps {
+  licese_secret_name : string;
+}
+
 export class KongCpEks extends Stack {
 
   public readonly control_plane: aws_eks.Cluster;
@@ -10,13 +14,14 @@ export class KongCpEks extends Stack {
   public readonly telemetry_dns : string;
   public readonly cluster_dns : string;
 
-  constructor(scope: Construct, id: string, props: StackProps = {} ) {
+  constructor(scope: Construct, id: string, props: KongCpEksStackProps ) {
     super(scope, id, props);
+
 
     const kong_control_plane = new KongCP.KongEks(this, 'KongEksCp', {
       hostedZoneName: 'kong-cp.internal',
       namespace: 'kong',
-      licenseSecretsName: 'kong-license-cdk',
+      licenseSecretsName:props.licese_secret_name,
       controlPlaneClusterProps: {
         kongTelemetryOptions: {
           createPrometheusWorkspace: true,
@@ -38,7 +43,7 @@ export class KongCpEks extends Stack {
         databasename: 'kongdb',
         username: 'kongadmin',
       },
-
+    
     });
 
     this.control_plane = kong_control_plane.controlPlane;
@@ -48,5 +53,3 @@ export class KongCpEks extends Stack {
     // define resources here...
   }
 }
-
-
