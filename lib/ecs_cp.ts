@@ -15,16 +15,6 @@ export class KongCpEcs extends Stack {
     constructor(scope: Construct, id: string, props: StackProps = {} ) {
         super(scope, id, props);
 
-        // The code that defines your stack goes here
-        const vpc = new Vpc(
-            this,
-            "kongVpc",
-            {
-                enableDnsSupport: true,
-                cidr: "10.0.0.0/16",
-                enableDnsHostnames: true,
-        });
-
         const kong_control_plane = new KongCP.KongEcs(this,'KongEcsCp', {
             hostedZoneName: "kong-cp.internal",
             kongFeaturesProps: {
@@ -50,7 +40,6 @@ export class KongCpEcs extends Stack {
                 memory: 2048,
                 desiredCount: 1
             },
-            vpc: vpc,
             clusterName: "kong-cp",
             internetFacing: true,
             licenseSecret: "kong-license-cdk",
