@@ -16,7 +16,21 @@ export class KongCpEcs extends Stack {
         super(scope, id, props);
 
         const kong_control_plane = new KongCP.KongEcs(this,'KongEcsCp', {
-            hostedZoneName: "kong-cp.internal",
+
+            clusterProps: {
+                clusterName: "kong-cp",
+                containerInsights: true
+            },
+            rdsProps: {
+                username: "kong",
+                databasename: "kong",
+                postgresversion: PostgresEngineVersion.VER_12
+            },
+
+            kongTaskProps: {
+                cpu: 1024,
+                memoryLimitMiB: 2048
+            },
             kongFeaturesProps: {
                 kongBootstrapMigration: true,
                 adminProps: {
@@ -35,19 +49,10 @@ export class KongCpEcs extends Stack {
                     enabled: true
                 }
             },
-            kongTaskProps: {
-                cpu: 1024,
-                memory: 2048,
-                desiredCount: 1
-            },
-            clusterName: "kong-cp",
+            hostedZoneName: "kong-cp.internal",
             internetFacing: true,
             licenseSecret: "kong-license-cdk",
-            rdsProps: {
-                username: "kong",
-                databasename: "kong",
-                postgresversion: PostgresEngineVersion.VER_12
-            }
+            desiredCount: 1
         });
 
         this.control_plane = kong_control_plane.controlPlane;

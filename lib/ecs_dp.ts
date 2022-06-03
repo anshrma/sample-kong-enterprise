@@ -15,13 +15,16 @@ export class KongDpEcs extends Stack {
     constructor(scope: Construct, id: string, props: KongDpEcsStackProps) {
         super(scope, id, props);
         const data_plane = new KongDP.KongEcs(this,'KongEcsDp', {
+            clusterProps: {
+                clusterName: "kong-dp",
+                vpc: props.vpc,
+                containerInsights: true
+            },
             kongTaskProps: {
                 cpu: 1024,
-                memory: 2048,
-                desiredCount: 1
+                memoryLimitMiB: 2048,
             },
-            vpc: props.vpc ,
-            clusterName: "kong-dp",
+            desiredCount: 1,
             internetFacing: true,
             privateCaArn: props.private_ca_arn,
             clusterDns: props.cluster_dns,
