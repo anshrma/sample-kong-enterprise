@@ -34,19 +34,20 @@ export class KongCpEcs extends Stack {
             kongFeaturesProps: {
                 kongBootstrapMigration: true,
                 adminProps: {
-                    enabled: true,
-                },
-                devPortalProps: {
-                    enabled: true
+                    enableHttp: true,
                 },
                 kongManagerProps: {
+                    enabled: true,
+                    enableHttp: true
+                },
+                devPortalProps: {
                     enabled: true
                 },
                 clusterProps: {
                     enabled: true,
                 },
                 clusterTelemetryProps: {
-                    enabled: true
+                    enabled: true,
                 }
             },
             hostedZoneName: "kong-cp.internal",
