@@ -1,10 +1,14 @@
 import { Stack, StackProps, aws_ecs, aws_rds, aws_ec2 } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-//import * as KongCP from 'kong-control-plane';
-import * as KongCP from "../../kong-control-plane/src";
+import * as KongCP from 'kong-control-plane';
+// import * as KongCP from "../../kong-control-plane/src";
 
 import {Vpc} from "aws-cdk-lib/aws-ec2";
 import {PostgresEngineVersion} from "aws-cdk-lib/aws-rds";
+
+interface KongCpEcsStackProps extends StackProps {
+    licese_secret_name : string;
+  }
 export class KongCpEcs extends Stack {
 
     public readonly control_plane: aws_ecs.Cluster;
@@ -12,7 +16,7 @@ export class KongCpEcs extends Stack {
     public readonly telemetry_dns : string;
     public readonly cluster_dns : string;
 
-    constructor(scope: Construct, id: string, props: StackProps = {} ) {
+    constructor(scope: Construct, id: string, props: KongCpEcsStackProps ) {
         super(scope, id, props);
 
         const kong_control_plane = new KongCP.KongEcs(this,'KongEcsCp', {
@@ -52,7 +56,7 @@ export class KongCpEcs extends Stack {
             },
             hostedZoneName: "kong-cp.internal",
             internetFacing: true,
-            licenseSecret: "kong-license-cdk",
+            licenseSecret: props.licese_secret_name,
             desiredCount: 1
         });
 

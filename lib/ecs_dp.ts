@@ -1,14 +1,15 @@
 
 import {aws_ec2, Stack, StackProps} from "aws-cdk-lib";
 import {Construct} from "constructs";
-//import * as kongDP from 'kong-data-plane';
-import * as KongDP from "../../kong-data-plane/src";
+import * as KongDP from 'kong-data-plane';
+// import * as KongDP from "../../kong-data-plane/src";
 
 interface KongDpEcsStackProps extends StackProps {
     vpc: aws_ec2.IVpc;
     cluster_dns: string;
     telemetry_dns: string;
     private_ca_arn: string;
+    licese_secret_name : string;
 };
 
 export class KongDpEcs extends Stack {
@@ -29,7 +30,7 @@ export class KongDpEcs extends Stack {
             privateCaArn: props.private_ca_arn,
             clusterDns: props.cluster_dns,
             telemetryDns: props.telemetry_dns,
-            licenseSecret: "kong-license-cdk",
+            licenseSecret: props.licese_secret_name,
         });
     }
 }

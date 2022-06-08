@@ -1,19 +1,38 @@
 # Sample Application - Kong Enterprise on AWS
 
-This repository hosts code samples that you can use to get started for creating Kong Enterprise Platform on EKS using kong-control-plane, kong-data-plane and kong-core AWS CDK Construct. 
+This repository hosts code samples offering a AWS CDK App that you can use to quickly get started for creating Kong Enterprise Platform using kong-control-plane, kong-data-plane and kong-core AWS CDK Construct. 
 
 Please let us know if you need more samples by opening an issue here and we would priortize it.
+
+## Pre-Requisites
+
+* You would need a Kong Enterprise License Key and save it in AWS Secrets Manager with a name of `kong-license-cdk`. If you choose a different name to save the secrets, you would need to modify devEnv.licese_secret_name property in `/bin/sample-kong-apps.ts`
+* You have bootstrapped the AWS Account and Region with AWS CDK. If not, refer [here](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html)
 
 ## Sample use cases
 
 You can pick and choose the desired use case. 
 
-|Use Case | Sample Code to refer  |
---- | --- |
-|Control Plane on Amazon Linux2 | /lib/eks_cp.ts|
-|Data Plane on Amazon Linux2 | /lib/eks_dp.ts|
+|Use Case | Sample Code to refer  | Command to Deploy | 
+--- | --- | --- | 
+|Control Plane on EKS and AL2 | /lib/eks_cp.ts| `cdk deploy kong-cp-eks`
+|Data Plane on EKS and AL2 | /lib/eks_dp.ts| `cdk deploy kong-dp-eks`
+|Data Plane on ECS and Fargate | /lib/ecs_cp.ts| `cdk deploy kong-cp-ecs`
+|Data Plane on ECS and Fargate | /lib/ecs_dp.ts| `cdk deploy kong-dp-ecs`
+|Control Plane on EKS and AL2 with DataPlane on ECS and Fargate | /bin/sample-kong-apps.ts| `cdk deploy kong-dp-ecs-with-eks-cp`
 
-## Useful commands
+
+## Assumption
+
+The VPC in which Kong data plane is deployed has the connectivity (and DNS resolvable) with the VPC in which control plane is deployed.
+
+## Deployment Steps
+
+* Ensure you have actioned on the `Pre-Requisites` section above.
+* Execute `npm install` to install the NPM packages
+* Execute `npm run build` to compile typescript to js
+* Select the commands from the `Sample Use Cases` section above
+## Other useful commands
 
  * `npm run build`   compile typescript to js
  * `npm run watch`   watch for changes and compile

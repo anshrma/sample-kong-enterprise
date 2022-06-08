@@ -17,7 +17,10 @@ const kong_control_plane_eks = new KongCpEks(app, 'kong-cp-eks', {
   env: devEnv,
   licese_secret_name: devEnv.licese_secret_name, 
 });
-const kong_control_plane_ecs = new KongCpEcs(app, 'kong-cp-ecs', { env: devEnv });
+const kong_control_plane_ecs = new KongCpEcs(app, 'kong-cp-ecs', { 
+  env: devEnv,
+  licese_secret_name: devEnv.licese_secret_name  
+});
 
 new KongDpEks(app, 'kong-dp-eks', {
   env: devEnv,
@@ -26,7 +29,7 @@ new KongDpEks(app, 'kong-dp-eks', {
   telemetry_dns: kong_control_plane_eks.telemetry_dns,
   private_ca_arn: kong_control_plane_eks.private_ca_arn,
   licese_secret_name: devEnv.licese_secret_name,
-  prometheus_endpoint: 'https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-b9eedac3-ae00-41dd-9812-2d7f3238bdb0/api/v1/remote_write',
+  prometheus_endpoint: kong_control_plane_eks.prometheus_endpoint,
 });
 
 new KongDpEcs(app, 'kong-dp-ecs', {
@@ -35,6 +38,7 @@ new KongDpEcs(app, 'kong-dp-ecs', {
   vpc: kong_control_plane_ecs.control_plane.vpc,
   telemetry_dns: kong_control_plane_ecs.telemetry_dns,
   private_ca_arn: kong_control_plane_ecs.private_ca_arn,
+  licese_secret_name: devEnv.licese_secret_name,
 });
 
 new KongDpEcs(app, 'kong-dp-ecs-with-eks-cp', {
@@ -43,6 +47,7 @@ new KongDpEcs(app, 'kong-dp-ecs-with-eks-cp', {
   vpc: kong_control_plane_eks.control_plane.vpc,
   telemetry_dns: kong_control_plane_eks.telemetry_dns,
   private_ca_arn: kong_control_plane_eks.private_ca_arn,
+  licese_secret_name: devEnv.licese_secret_name,
 });
 
 

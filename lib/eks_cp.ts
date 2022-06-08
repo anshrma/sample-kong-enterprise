@@ -1,7 +1,7 @@
 import { Stack, StackProps, aws_eks, aws_rds, aws_ec2 } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as KongCP from 'kong-control-plane';
-import * as KongCP from '../../kong-control-plane/src';
+import * as KongCP from 'kong-control-plane';
+// import * as KongCP from '../../kong-control-plane/src';
 
 interface KongCpEksStackProps extends StackProps {
   licese_secret_name : string;
@@ -13,6 +13,7 @@ export class KongCpEks extends Stack {
   public readonly private_ca_arn : string;
   public readonly telemetry_dns : string;
   public readonly cluster_dns : string;
+  public readonly prometheus_endpoint : string | undefined;
 
   constructor(scope: Construct, id: string, props: KongCpEksStackProps ) {
     super(scope, id, props);
@@ -50,6 +51,7 @@ export class KongCpEks extends Stack {
     this.private_ca_arn = kong_control_plane.privateCaArn;
     this.telemetry_dns = kong_control_plane.telemetryDns;
     this.cluster_dns = kong_control_plane.clusterDns;
+    this.prometheus_endpoint = kong_control_plane.prometheusEndpoint;
     // define resources here...
   }
 }

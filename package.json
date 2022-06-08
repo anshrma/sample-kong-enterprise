@@ -23,7 +23,7 @@
     "aws-cdk-lib": "2.13.0",
     "constructs": "10.0.5",
     "kong-control-plane": "^2.0.4",
-    "kong-data-plane": "2.0.2",
+    "kong-data-plane": "^2.0.2",
     "source-map-support": "^0.5.21"
   }
 }
